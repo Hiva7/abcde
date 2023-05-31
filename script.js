@@ -38,17 +38,32 @@ item.style.display="flex";
 item.style.flexWrap="wrap";
 item.style.justifyContent="center";
 
-let arr = new Array();
-let index = 0;
+let arr=new Array();
+let index=0;
 
 function add_item(a){
     arr[index]=a;
+    item.innerHTML+=`
+    <div class="Iitem">
+        <img src=${data[a][0]} style="width: 100px;">
+        <button onclick="(function() { remove_item('${index}') })()">x</button>
+    </div>
+    `
     index++;
-    item.innerHTML+=`<img src=${data[a][0]} style="width: 100px;">
-    <span></span>`
     item.style.display="none";
 }
 
+function remove_item(a){
+    let i=document.getElementsByClassName('Iitem')[a];
+    index--;
+    i.parentNode.removeChild(i);
+
+    let items=document.getElementsByClassName('Iitem');
+    for (let j=0; j<items.length; j++) {
+        let button=items[j].getElementsByTagName('button')[0];
+        button.setAttribute('onclick', `(function() { remove_item('${j}') })()`);
+    }
+}
 
 let inven=document.createElement("div");
 document.body.appendChild(inven);
@@ -61,7 +76,7 @@ for(let i=0; i<data.length; i++){
         <img src="${data[i][0]}" style="width: 200px;"><br>
         <p1 style="color: red">${data[i][1]}</p1><br>
         <p2>${data[i][2]}$</p1><br>
-        <button onclick="(function() { add_item('${i}') })()">Add
+        <button onclick="(function() { add_item('${i}') })()">Add</button>
     </div>`;
 }
 
